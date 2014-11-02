@@ -81,7 +81,8 @@ class APNSAlert(object):
             raise APNSValueError("Unexpected type of argument. "\
                                     "It should be list or tuple of strings")
 
-        self.locArgs = ['"%s"' % str(x) for x in la]
+        self.locArgs = [ '"%s"'.encode('utf8') % unicode(x).encode('utf8') for x in la ] # fix for https://code.google.com/p/apns-python-wrapper/issues/detail?id=7
+        #buggy/original: self.locArgs = ['"%s"' % str(x) for x in la]
         return self
 
     def build(self):
