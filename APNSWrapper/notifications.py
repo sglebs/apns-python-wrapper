@@ -137,10 +137,15 @@ class APNSProperty(object):
         if isinstance(self.data, str) or isinstance(self.data, unicode):
             return '%s"%s"' % (name, _doublequote(self.data))
 
+
         if isinstance(self.data, (tuple, list)):
             arguments = map(lambda x: if_else(isinstance(x, str), \
-                            '"%s"' % _doublequote(str(x)), str(x)), self.data)
+                            '"%s"'.encode('utf8') % _doublequote(unicode(x).encode('utf8')), unicode(x).encode('utf8')), self.data)
             return "%s[%s]" % (name, ",".join(arguments))
+        # if isinstance(self.data, (tuple, list)):
+        #     arguments = map(lambda x: if_else(isinstance(x, str), \
+        #                     '"%s"' % _doublequote(str(x)), str(x)), self.data)
+        #     return "%s[%s]" % (name, ",".join(arguments))
 
         return '%s%s' % (name, NULL)
 
